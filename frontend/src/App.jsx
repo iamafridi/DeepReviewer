@@ -53,7 +53,7 @@ function App() {
       console.log("Sending request to backend...");
 
       // Simulate progress updates (replace with actual API call)
-      const response = await axios.post("http://localhost:3000/ai/get-review/", { code }, {
+      const response = await axios.post("https://deepreviewer.vercel.app/ai/get-review/", { code }, {
         onUploadProgress: (progressEvent) => {
           const percent = Math.round((progressEvent.loaded * 100) / progressEvent.total);
           setProgress(percent); // Update progress bar
@@ -89,86 +89,92 @@ function App() {
         </h2>
       </header>
 
-      <div className="flex flex-row gap-6 w-full max-w-6xl">
-        <div className="w-1/2 h-full bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 overflow-auto">
-          {/* <input
-            type="file"
-            accept=".js, .py, .css, .cpp, .cs, .ts, .html, .json, .java"
-            onChange={(e) => setCode(e.target.result)}
-            className="mb-4 text-sm text-gray-400 cursor-pointer bg-gray-900 p-4 rounded-xl"
-          /> */}
-          <input
-            type="file"
-            accept=".js, .py, .css, .cpp, .cs, .ts, .html, .json, .java"
-            onChange={(e) => {
-              const file = e.target.files[0]; // Get the selected file
-              if (file) {
-                const reader = new FileReader();
-                reader.onload = () => {
-                  setCode(reader.result); // Set the file content to the state
-                };
-                reader.readAsText(file); // Read the file as text
-              }
-            }}
-            className="mb-4 text-sm text-gray-400 cursor-pointer bg-gray-900 p-4 rounded-xl"
-          />
+      <div className="flex flex-col md:flex-row items-center justify-center min-h-screen gap-6 w-full px-4">
+  {/* Code Input & Editor */}
+  <div className="w-full sm:w-[400px] md:w-[450px] lg:w-[500px] h-[500px] bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 flex flex-col">
+    
+    {/* File Input */}
+    <div className="mb-4 text-sm text-gray-400 cursor-pointer bg-gray-900 p-3 rounded-xl">
+      <input
+        type="file"
+        accept=".js, .py, .css, .cpp, .cs, .ts, .html, .json, .java"
+        onChange={(e) => {
+          const file = e.target.files[0];
+          if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+              setCode(reader.result);
+            };
+            reader.readAsText(file);
+          }
+        }}
+        className="w-full bg-transparent outline-none"
+      />
+    </div>
 
-          <div className="border border-gray-600 rounded-lg p-4 roundxl bg-gray-900">
-            <Editor value={code} onValueChange={(code) => setCode(code)}
-              highlight={(code) => prism.highlight(code, prism.languages.javascript, "javascript")}
-              padding={10}
-              style={{ fontFamily: "Fire Code, monospace", fontsize: 16 }}></Editor>
+    {/* Scrollable Code Editor */}
+    <div className="border border-gray-600 rounded-lg p-4 bg-gray-900 text-white flex-1 h-[350px] overflow-y-auto scrollbar-thin scrollbar-thumb-gradient-to-r scrollbar-thumb-teal-500 scrollbar-thumb-pink-600 scrollbar-thumb-rounded-xl">
+  <Editor
+    value={code}
+    onValueChange={(code) => setCode(code)}
+    highlight={(code) => prism.highlight(code, prism.languages.javascript, "javascript")}
+    padding={10}
+    style={{
+      fontFamily: "Fira Code, monospace",
+      fontSize: 16,
+      whiteSpace: "pre-wrap",
+      wordBreak: "break-word",
+      width: "100%",
+      minHeight: "100%", // Ensures it grows naturally inside scrollable div
+    }}
+  />
+</div>
+
+
+    <button
+      onClick={reviewCode}
+      className="w-full mt-4 py-3 text-lg font-semibold text-white bg-gradient-to-r from-teal-500 to-pink-600 hover:from-pink-500 hover:to-teal-600 rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-xl"
+      disabled={loading}
+    >
+      {loading ? "Loading..." : "Review Code"}
+    </button>
+  </div>
+
+  {/* Review Section (Same height as Input Box) */}
+  <div className="w-full sm:w-[400px] md:w-[450px] lg:w-[500px] h-[500px] bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 overflow-y-auto scrollbar-thin scrollbar-thumb-gradient-to-r scrollbar-thumb-teal-500 scrollbar-thumb-pink-600 scrollbar-thumb-rounded-xl transition-all duration-300">
+    {loading ? (
+      <div className="flex flex-col items-center justify-center h-full space-y-4 p-6">
+        <div className="flex items-center justify-center">
+          <div className="w-16 h-16 border-4 border-teal-500 border-t-transparent rounded-full animate-spin flex items-center justify-center">
+            <LuLoaderPinwheel className="w-8 h-8 text-teal-500 animate-spin" />
           </div>
-
-          <button onClick={reviewCode} className="w-full mt-4 py-3 text-lg font-semibold text-white bg-gradient-to-r from-blue-500 to-purple-600 hover:from-purple-500 hover:to-blue-600  rounded-lg shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-xl" disabled={loading}>
-            {loading ? "Loading..." : "Review Code 🤖"}
-          </button>
         </div>
-
-        <div className="w-1/2 h-full bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 overflow-auto">
-          {loading ? (
-            <div className="flex flex-col items-center justify-center h-full space-y-4 p-6">
-              <div className="flex items-center justify-center">
-                <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin flex items-center justify-center">
-                  <LuLoaderPinwheel className="w-8 h-8 text-blue-500 animate-spin" />
-                </div>
-              </div>
-              <div className="w-full bg-gray-700 rounded-full h-2 px-2">
-                <div className="bg-blue-500 h-2 transition-all duration-200" style={{ width: `${progress}%` }}></div>
-              </div>
-              <p className='text-white'>{progress}%</p>
-              <p className='font-bold text-white'>Giving Your Code a Reality Check... 👀</p>
-            </div>
-          ) : (
-            <>
-              {review === '' && (
-                <p className="text-gray-400 uppercase bg-gray-900 border p-4 rounded-xl border-blue-500 ">Your review will appear here.</p>
-              )}
-              <Markdown rehypePlugins={[rehypeHighlight]} className="text-gray-300">{review}</Markdown>
-            </>
-          )}
+        <div className="w-full bg-gray-700 rounded-full h-2 px-2">
+          <div className="bg-teal-500 h-2 transition-all duration-200" style={{ width: `${progress}%` }}></div>
         </div>
-
-
-        {/* <div className="w-1/2 h-full bg-gray-800 p-6 rounded-lg shadow-lg border border-gray-700 overflow-auto">
-          {loading ? (
-            <div className="flex flex-col items-center justify-center h-full space-y-4 p-6">
-              <div className="flex items-center justify-center">
-                <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin flex items-center justify-center">
-                  <LuLoaderPinwheel className="w-8 h-8 text-blue-500 animate-spin" />
-                </div>
-              </div>
-              <div className="w-full bg-gray-700 rounded-full h-2 px-2">
-                <div className="bg-blue-500 h-2 transition-all duration-200" style={{ width: `${progress}%` }}></div>
-              </div>
-              <p className='text-white'>{progress}%</p>
-              <p className='font-bold text-white'>Giving Your Code a Reality Check... 👀</p>
-            </div>
-          ) : (
-            <Markdown rehypePlugins={[rehypeHighlight]} className="text-gray-300">{review}</Markdown>
-          )}
-        </div> */}
+        <p className="text-white">{progress}%</p>
+        <p className="font-bold text-white">Giving Your Code a Reality Check... 👀</p>
       </div>
+    ) : (
+      <>
+        {review === "" && (
+          <p className="text-gray-400 uppercase bg-gray-900 border p-4 rounded-xl border-teal-500">
+            Your review will appear here.
+          </p>
+        )}
+        <Markdown rehypePlugins={[rehypeHighlight]} className="text-gray-300">
+          {review}
+        </Markdown>
+      </>
+    )}
+  </div>
+</div>
+
+
+
+
+
+
 
       <footer className="w-full  text-gray-400 text-center p-1 mt-6">
         <p>
