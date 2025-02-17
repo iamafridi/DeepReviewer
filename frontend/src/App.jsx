@@ -73,7 +73,7 @@ function App() {
   <header className="w-full flex flex-col items-center px-10">
     <nav className="flex flex-wrap md:text-center md:justify-between md:items-center w-full mb-4 pt-1 px-4 sm:px-6 lg:px-8">
       <a href="/" className="logo_text2 object-contain cyan_gradient uppercase text-lg sm:text-xl md:text-2xl justify-center cursor-pointer">
-        DeepReview
+        DeepReviewer
       </a>
       <div className="flex gap-2 flex-wrap justify-center sm:justify-end w-full sm:w-auto mt-2 sm:mt-0">
         <button type="button" onClick={() => window.open('https://www.linkedin.com/in/iamafridi/')} className="black_btn">LinkedIn</button>
@@ -84,10 +84,10 @@ function App() {
 
     <h1 className="head_text">
     {/* Enhance & Debug Your Code Effortlessly with <br className="max-md:hidden" /> */}
-      <span className="cyan_gradient">DeepReview AI</span>
+      <span className="cyan_gradient">DeepReviewer AI</span>
     </h1>
     <h2 className="desc text-black italic">
-      Your AI-Powered Debugging Assistant. Instantly analyze, detect, and fix errors in your code using <span className='font-bold'>Deepseek-R1-distill-Qwen-32b</span> Model cutting-edge technology. Debug smarter with DeepReview.
+      Your AI-Powered Debugging Assistant. Instantly analyze, detect, and fix errors in your code using <span className='font-bold'>Deepseek-R1-distill-Qwen-32b</span> Model cutting-edge technology. Debug smarter with DeepReviewer.
     </h2>
   </header>
 
@@ -177,7 +177,7 @@ function App() {
 
   <footer className="w-full text-gray-400 text-center p-1 mt-6">
     <p>
-      &copy; 2024 DeepReview. All rights reserved By
+      &copy; 2024 DeepReviewer. All rights reserved By
       <a className="underline ml-2 font-bold text-sm uppercase inline-flex items-center gap-1" href="https://iamafridi-portfolio.netlify.app" target="_blank" rel="noopener noreferrer">
         Afridi Akbar Ifty <FiArrowUpRight />
       </a>
