@@ -69,7 +69,7 @@ function App() {
 
 
   return (
-    <div className="min-h-[calc(100vh-2rem)] w-full bg-gradient-to-br from-gray-50 via-gray-400 to-gray-700 dark:bg-gray-100 flex flex-col items-center p-4">
+    <div className="min-h-[calc(100vh-2rem)] w-full bg-gradient-to-br from-emerald-200 via-gray-200 to-yellow-100 dark:bg-gray-100 flex flex-col items-center p-4">
   <header className="w-full flex flex-col items-center px-10">
     <nav className="flex flex-wrap md:text-center md:justify-between md:items-center w-full mb-4 pt-1 px-4 sm:px-6 lg:px-8">
       <a href="/" className="logo_text2 object-contain cyan_gradient uppercase text-lg sm:text-xl md:text-2xl justify-center cursor-pointer">
@@ -83,11 +83,11 @@ function App() {
     </nav>
 
     <h1 className="head_text">
-      Fix Your Code Effortlessly with <br className="max-md:hidden" />
+    {/* Enhance & Debug Your Code Effortlessly with <br className="max-md:hidden" /> */}
       <span className="cyan_gradient">DeepReview AI</span>
     </h1>
-    <h2 className="desc text-black">
-      Your AI-Powered Debugging Assistant. Instantly analyze, detect, and fix errors in your code using DEEPSEEK's R1 Model cutting-edge technology. Debug smarter with DeepReview.
+    <h2 className="desc text-black italic">
+      Your AI-Powered Debugging Assistant. Instantly analyze, detect, and fix errors in your code using <span className='font-bold'>Deepseek-R1-distill-Qwen-32b</span> Model cutting-edge technology. Debug smarter with DeepReview.
     </h2>
   </header>
 
