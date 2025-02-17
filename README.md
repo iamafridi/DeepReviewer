@@ -4,6 +4,8 @@
 
 **DeepReviewer** is an **AI-powered code reviewer** designed to provide expert-level feedback on code snippets across multiple programming languages. Built using **Node.js** and integrated with the **Groq SDK**, it leverages the **DeepSeek-R1-Distill-Qwen-32B** model to analyze, review, and optimize code. The AI acts as a senior developer with 15+ years of experience, ensuring high-quality, structured feedback.
 
+![alt text](image.png)
+
 ## 🛠️ Features
 
 - **Automated Code Review:** Provides detailed code analysis and suggestions.
